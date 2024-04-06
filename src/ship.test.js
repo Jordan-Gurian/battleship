@@ -15,6 +15,14 @@ test('hit function increments', () => {
     expect(myShip).toMatchObject({ numHits: 2 });
 });
 
+test('hit function does not exceed length', () => {
+    const myShip = Ship(2);
+    myShip.hit();
+    myShip.hit();
+    myShip.hit();
+    expect(myShip).toMatchObject({ numHits: 2 });
+});
+
 test('sunk works', () => {
     const myShip = Ship(2);
     myShip.hit();

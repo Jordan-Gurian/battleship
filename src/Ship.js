@@ -1,6 +1,16 @@
 export default function Ship(length) {
+    if (length > 5) { 
+        this.length = 5;
+    }
+
+    if (length < 2) {
+        this.length = 2;
+    }
+    
     const hit = function() {
-        this.numHits += 1;
+        if (!this.isSunk()) {
+            this.numHits += 1;
+        }
     }
 
     const isSunk = function() {
