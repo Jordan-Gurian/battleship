@@ -5,7 +5,7 @@ import Ship from './Ship';
 test('has gameboard', () => {
     const myGameboard = Gameboard();
     const myPlayer = Player(myGameboard);
-    expect(myPlayer).toMatchObject({ board: myGameboard })
+    expect(myPlayer).toMatchObject({ gameboard: myGameboard })
 })
 
 test('set opponent', () => {
@@ -37,7 +37,9 @@ test('prevent attack to previously attacked location', () => {
     const myPlayer = Player(myGameboard);
     const oppPlayer = Player(oppGameboard);
     myPlayer.setOpponent(oppPlayer);
+    myPlayer.changeTurn();
     myPlayer.attack(0, 0);
+    myPlayer.changeTurn();
     myPlayer.attack(0, 0);
     expect(aShip.numHits).toBe(1);
 })

@@ -1,4 +1,4 @@
-export default function Player(board, isComputer = false, opponent = null, isTurn = true) {
+export default function Player(gameboard, isComputer = false, opponent = null, isTurn = false) {
     
     const setOpponent = function(player) {
         this.opponent = player;
@@ -17,9 +17,13 @@ export default function Player(board, isComputer = false, opponent = null, isTur
     }
 
     const attack = function(x, y) {
-        const madeMove = this.opponent.board.receiveAttack(x, y);
+        if (this.opponent === null) {
+            return
+        }
+        const madeMove = this.opponent.gameboard.receiveAttack(x, y);
         if (madeMove) {
             this.changeTurn();
+            this.opponent.changeTurn();
         }
     }
 
@@ -27,6 +31,6 @@ export default function Player(board, isComputer = false, opponent = null, isTur
         this.isTurn = !this.isTurn;
     }
     
-    return { board, isComputer, opponent, isTurn, 
+    return { gameboard, isComputer, opponent, isTurn, 
         setOpponent, attack, randomAttack, changeTurn }
 }
