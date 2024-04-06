@@ -1,5 +1,6 @@
 :root {
     --standard-gap: 10px;
+    --standard-padding: 20px;
     --body-bg-color: gray;
     --board-bg-color: aqua;
 }
@@ -13,8 +14,9 @@ body {
     background-color: var(--body-bg-color);
     display: flex;
     gap: var(--standard-gap);
+    padding: var(--standard-padding);
     justify-content: space-between;
-    align-content: center;
+    align-items: center;
 }
 
 .board {
@@ -31,4 +33,8 @@ body {
     border: 1px solid black;
     width: 1fr;
     height: 1fr;
+}
+
+.new-game {
+    height: 40px;
 }

@@ -10,6 +10,7 @@ import Interface from './Interface';
 
 const myUI = Interface();
 
-myUI.createBoard(true);
-myUI.createBoard(false);
+myUI.interfaceSetUp();
+// myUI.createBoard(true);
+// myUI.createBoard(false);
 
