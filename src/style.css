@@ -1,0 +1,34 @@
+:root {
+    --standard-gap: 10px;
+    --body-bg-color: gray;
+    --board-bg-color: aqua;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    background-color: var(--body-bg-color);
+    display: flex;
+    gap: var(--standard-gap);
+    justify-content: space-between;
+    align-content: center;
+}
+
+.board {
+    background-color: var(--board-bg-color);
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    width: 35vw;
+    height: 35vw;
+    border: 1px solid black;
+}
+
+.board-box {
+    border: 1px solid black;
+    width: 1fr;
+    height: 1fr;
+}
