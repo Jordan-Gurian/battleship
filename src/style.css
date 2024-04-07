@@ -45,13 +45,29 @@ body {
     height: 1fr;
 }
 
+.board-box:hover {
+    opacity: 0.4;
+    background-color: var(--body-bg-color);
+}
+
 .new-game {
     height: 40px;
 }
 
 .game-over {
+    height: 40px;
     font-size: 2rem;
     color: brown;
     font-weight: bold;
     text-align: center;
+}
+
+.no-hover {
+    pointer-events: none;
+}
+
+.vert,
+.horz {
+    width: 100px;
+    margin: 10px
 }

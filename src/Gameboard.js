@@ -26,7 +26,7 @@ export default function Gameboard() {
         const tempBoard = this.board;
         const coords = [];
         if (x < 0 || y < 0) {
-            return
+            return false
         }
 
         if (direction === 'horz') {
@@ -34,7 +34,7 @@ export default function Gameboard() {
                 if (i < BOARD_LENGTH && this.isSpaceFree(x, i)) {
                     coords.push([x, i]);
                 } else {
-                    return;
+                    return false
                 }
             }
         } else { // default to vertical orientation
@@ -42,7 +42,7 @@ export default function Gameboard() {
                 if (i < BOARD_LENGTH && this.isSpaceFree(i, y)) {
                     coords.push([i, y]);
                 } else {
-                    return;
+                    return false
                 }
             }
         }
@@ -50,6 +50,7 @@ export default function Gameboard() {
         coords.forEach( (item) => {
             tempBoard[item[0]][item[1]] = ship;
         })
+        return true
     }
 
     const receiveAttack = function(x, y) {

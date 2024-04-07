@@ -1,10 +1,27 @@
 import Game from './Game';
+import Ship from './Ship';
 
 export default function Interface() {
+
+
+    let shipDir = 'horz';
+
+    const vertButton = document.querySelector('.vert');
+
+    vertButton.addEventListener('click', () => {
+        shipDir = 'vert';
+    })
+
+    const horzButton = document.querySelector('.horz');
+
+    horzButton.addEventListener('click', () => {
+        shipDir = 'horz';
+    })
 
     const interfaceSetUp = function() {
         const myGame = Game();
         myGame.gameSetUp();
+        myGame.setComputerShips(myGame.computer);
         this.createBoard(myGame, myGame.player);
         this.createBoard(myGame, myGame.computer);
         // myGame.startGame();
@@ -14,13 +31,13 @@ export default function Interface() {
             gameOver.textContent = '';
             const newGame = Game();
             newGame.gameSetUp();
-            newGame.gameSetUp()
+            newGame.setComputerShips(newGame.computer);
             this.createBoard(newGame, newGame.player);
             this.createBoard(newGame, newGame.computer);
         })
     }
 
-    const createBoard = function(game, currentPlayer) {
+    const createGameEvents = function(game, currentPlayer) {
         const BOARD_LENGTH = 10;
         let container;
         const box = [];
@@ -48,6 +65,7 @@ export default function Interface() {
                 const y = i % 10;
                 currentPlayer.opponent.attack(x, y);
                 this.updateBoard(game, box, currentPlayer.gameboard, i);
+                box[i].classList.add('no-hover');
                 if (currentPlayer.isComputer) {
                     const playerBox = Array.from(document.querySelector('.board.human').children);
                     const computerAttack = currentPlayer.randomAttack();
@@ -67,6 +85,50 @@ export default function Interface() {
         }
     }
 
+    const createBoard = function(game, currentPlayer) {
+        const BOARD_LENGTH = 10;
+        let container;
+        const box = [];
+
+        if (!currentPlayer.isComputer) {
+            container = document.querySelector('.board.human');
+        } else {
+            container = document.querySelector('.board.computer');
+        }
+        container.innerHTML = '';
+
+        for (let i = 0; i < BOARD_LENGTH**2; i++) {
+            box[i] = document.createElement('div');
+            box[i].classList.add('board-box');
+            
+            // eslint-disable-next-line no-loop-func
+            box[i].addEventListener('click', () => {
+                if (!currentPlayer.isComputer) {
+                    const x = Math.floor(i / 10);
+                    const y = i % 10;
+                    if (currentPlayer.gameboard.placeShip(Ship(currentPlayer.shipLen[0]), shipDir, x, y)) {
+                        for (let j = 0; j < currentPlayer.shipLen[0]; j++) {
+                            if (shipDir === 'horz') {
+                                this.updateBoard(game, box, currentPlayer.gameboard, i+j);
+                            } else {
+                                this.updateBoard(game, box, currentPlayer.gameboard, i + (10 * j));
+                            }
+                        }
+                        currentPlayer.shipLen.shift();
+                    }
+                    if (currentPlayer.shipLen.length === 0) {
+                        this.createGameEvents(game, currentPlayer);
+                        this.createGameEvents(game, currentPlayer.opponent);
+
+                    }
+                }
+            });
+            container.appendChild(box[i]);
+        }
+    }
+
+    
+
     const updateBoard = function(game, box, gameboard, i) {
         const x = Math.floor(i / 10);
         const y = i % 10;
@@ -81,5 +143,5 @@ export default function Interface() {
         }
     }
 
-    return {  createBoard, interfaceSetUp, updateBoard }
+    return {  createBoard, interfaceSetUp, updateBoard, createGameEvents }
 }

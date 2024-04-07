@@ -1,5 +1,7 @@
 export default function Player(gameboard, isComputer = false, opponent = null, isTurn = false) {
     
+    const shipLen = [2, 3, 3, 4, 5]; 
+
     const setOpponent = function(player) {
         this.opponent = player;
     }
@@ -32,6 +34,6 @@ export default function Player(gameboard, isComputer = false, opponent = null, i
         this.isTurn = !this.isTurn;
     }
     
-    return { gameboard, isComputer, opponent, isTurn, 
+    return { gameboard, isComputer, opponent, isTurn, shipLen, 
         setOpponent, attack, randomAttack, changeTurn }
 }
