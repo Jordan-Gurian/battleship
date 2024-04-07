@@ -1,5 +1,4 @@
 // import Game from './Game';
-import Ship from './Ship';
 import preGameBoxEventsCb from './preGameBoxEventsCb';
 
 export default function Interface(game) {
@@ -34,7 +33,7 @@ export default function Interface(game) {
             container = document.querySelector('.board.computer');
         }
         container.innerHTML = '';
-///
+
         for (let i = 0; i < BOARD_LENGTH**2; i++) {
             box[i] = document.createElement('div');
             box[i].classList.add('board-box');
@@ -45,7 +44,7 @@ export default function Interface(game) {
 
             // eslint-disable-next-line no-loop-func
             box[i].addEventListener('click', () => {
-                callback(this, currentPlayer, box, i)
+                callback(this, currentPlayer, box, i, shipDir)
             });
             container.appendChild(box[i]);
         }

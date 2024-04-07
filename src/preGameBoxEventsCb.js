@@ -1,8 +1,7 @@
 import Ship from './Ship';
 import inGameBoxEventsCb from './inGameBoxEventsCb';
 
-export default function preGameBoxEventsCb(userInterface, currentPlayer, box, i) {
-    const shipDir = 'horz';
+export default function preGameBoxEventsCb(userInterface, currentPlayer, box, i, shipDir) {
     if (!currentPlayer.isComputer) {
         const x = Math.floor(i / 10);
         const y = i % 10;
