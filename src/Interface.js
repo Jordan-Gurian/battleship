@@ -10,9 +10,13 @@ export default function Interface() {
         // myGame.startGame();
         const newGameButton = document.querySelector('.new-game');
         newGameButton.addEventListener('click', () => {
-            myGame.gameSetUp()
-            this.createBoard(myGame, myGame.player);
-            this.createBoard(myGame, myGame.computer);
+            const gameOver = document.querySelector('.game-over');
+            gameOver.textContent = '';
+            const newGame = Game();
+            newGame.gameSetUp();
+            newGame.gameSetUp()
+            this.createBoard(newGame, newGame.player);
+            this.createBoard(newGame, newGame.computer);
         })
     }
 
@@ -37,7 +41,7 @@ export default function Interface() {
             }
             
             box[i].addEventListener('click', () => {
-                if (currentPlayer.isTurn) {
+                if (currentPlayer.isTurn || game.winner != null) {
                     return
                 }
                 const x = Math.floor(i / 10);
@@ -48,6 +52,14 @@ export default function Interface() {
                     const playerBox = Array.from(document.querySelector('.board.human').children);
                     const computerAttack = currentPlayer.randomAttack();
                     this.updateBoard(game, playerBox, currentPlayer.opponent.gameboard, computerAttack[0] * 10 + computerAttack[1]);
+                }
+                if (game.isGameOver()) {
+                    const gameOver = document.querySelector('.game-over');
+                    if (game.winner === game.player) {
+                        gameOver.textContent = `Left board wins! Press "New Game" to play again!`;
+                    } else {
+                        gameOver.textContent = `Right board wins! Press "New Game" to play again!`;
+                    }
                 }
             });
             // will need to add event listener to track attacks

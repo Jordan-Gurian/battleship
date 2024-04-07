@@ -28,7 +28,6 @@ export default function Game() {
         }
     }
 
-    
     // const startGame = function() {
     //     this.player.changeTurn();
     //     while (!this.player.gameboard.allShipsSunk() && !this.computer.gameboard.allShipsSunk()) {
@@ -50,7 +49,7 @@ export default function Game() {
         else if ((this.computer.gameboard.allShipsSunk())) {
             this.winner = this.computer;
         }
-        return winner != null
+        return this.winner != null
     }
 
     return { player, computer, winner, gameSetUp, isGameOver }
