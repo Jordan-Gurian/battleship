@@ -1,28 +1,32 @@
 // import Game from './Game';
 import preGameBoxEventsCb from './preGameBoxEventsCb';
+import preGameHoverCb from './preGameHoverCb'
 
 export default function Interface(game) {
     let shipDir = 'horz';
 
     const vertButton = document.querySelector('.vert');
+    const horzButton = document.querySelector('.horz');
 
     vertButton.addEventListener('click', () => {
         shipDir = 'vert';
+        vertButton.classList.add('fake-hover');
+        horzButton.classList.remove('fake-hover');
     })
-
-    const horzButton = document.querySelector('.horz');
 
     horzButton.addEventListener('click', () => {
         shipDir = 'horz';
+        vertButton.classList.remove('fake-hover');
+        horzButton.classList.add('fake-hover');
     })
 
     const interfaceSetUp = function() {
         this.game.gameSetUp();
-        this.createBoard(this.game.player, preGameBoxEventsCb);
-        this.createBoard(this.game.computer, preGameBoxEventsCb);
+        this.createBoard(this.game.player, preGameBoxEventsCb, preGameHoverCb);
+        this.createBoard(this.game.computer, preGameBoxEventsCb, preGameHoverCb);
     }
 
-    const createBoard = function(currentPlayer, callback) {
+    const createBoard = function(currentPlayer, clickCb, mouseoverCb=null) {
         const BOARD_LENGTH = 10;
         let container;
         const box = [];
@@ -44,8 +48,16 @@ export default function Interface(game) {
 
             // eslint-disable-next-line no-loop-func
             box[i].addEventListener('click', () => {
-                callback(this, currentPlayer, box, i, shipDir)
+                clickCb(this, currentPlayer, box, i, shipDir)
             });
+
+            if (mouseoverCb != null) {
+                box[i].addEventListener('mouseover', () => {
+                    mouseoverCb(currentPlayer, box, i, shipDir);
+                })
+            }
+
+
             container.appendChild(box[i]);
         }
     }

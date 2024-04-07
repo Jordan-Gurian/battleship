@@ -45,7 +45,8 @@ body {
     height: 1fr;
 }
 
-.board-box:hover {
+.board-box:hover,
+.fake-hover {
     opacity: 0.4;
     background-color: var(--body-bg-color);
 }
