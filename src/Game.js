@@ -15,6 +15,8 @@ export default function Game() {
         this.player = Player(playerBoard);
         this.computer = Player(computerBoard, true, this.player);
         this.player.setOpponent(this.computer);
+        this.player.isTurn = true;
+        this.computer.isTurn = false;
 
         // Place ships, hardcoded for now
         const SHIP_LENGTHS = [2, 3, 3, 4, 5];
@@ -27,27 +29,29 @@ export default function Game() {
     }
 
     
-    const startGame = function() {
-        this.player.changeTurn();
-        while (!this.player.gameboard.allShipsSunk() && !this.computer.gameboard.allShipsSunk()) {
-            if (this.player.isTurn) {
-                const x = Math.floor(Math.random() * 10);
-                const y = Math.floor(Math.random() * 10);
-                this.player.attack(x, y);
-            } else {
-                this.computer.randomAttack();
-            }
-        }
-        this.declareWinner();
-    }
+    // const startGame = function() {
+    //     this.player.changeTurn();
+    //     while (!this.player.gameboard.allShipsSunk() && !this.computer.gameboard.allShipsSunk()) {
+    //         if (this.player.isTurn) {
+    //             const x = Math.floor(Math.random() * 10);
+    //             const y = Math.floor(Math.random() * 10);
+    //             this.player.attack(x, y);
+    //         } else {
+    //             this.computer.randomAttack();
+    //         }
+    //     }
+    //     this.declareWinner();
+    // }
 
-    const declareWinner = function() {
+    const isGameOver = function() {
         if (this.player.gameboard.allShipsSunk()) {
             this.winner = this.computer;
-        } else {
-            this.winner = this.player;
+        } 
+        else if ((this.computer.gameboard.allShipsSunk())) {
+            this.winner = this.computer;
         }
+        return winner != null
     }
 
-    return { player, computer, winner, gameSetUp, startGame, declareWinner }
+    return { player, computer, winner, gameSetUp, isGameOver }
 }

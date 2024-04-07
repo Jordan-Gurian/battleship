@@ -14,6 +14,7 @@ export default function Player(gameboard, isComputer = false, opponent = null, i
             y = Math.floor(Math.random() * BOARD_LENGTH);
             this.attack(x, y);
         }
+        return [x, y]
     }
 
     const attack = function(x, y) {
