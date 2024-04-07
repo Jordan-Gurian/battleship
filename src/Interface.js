@@ -1,9 +1,7 @@
-import Game from './Game';
+// import Game from './Game';
 import Ship from './Ship';
 
-export default function Interface() {
-
-
+export default function Interface(game) {
     let shipDir = 'horz';
 
     const vertButton = document.querySelector('.vert');
@@ -19,25 +17,12 @@ export default function Interface() {
     })
 
     const interfaceSetUp = function() {
-        const myGame = Game();
-        myGame.gameSetUp();
-        myGame.setComputerShips(myGame.computer);
-        this.createBoard(myGame, myGame.player);
-        this.createBoard(myGame, myGame.computer);
-        // myGame.startGame();
-        const newGameButton = document.querySelector('.new-game');
-        newGameButton.addEventListener('click', () => {
-            const gameOver = document.querySelector('.game-over');
-            gameOver.textContent = '';
-            const newGame = Game();
-            newGame.gameSetUp();
-            newGame.setComputerShips(newGame.computer);
-            this.createBoard(newGame, newGame.player);
-            this.createBoard(newGame, newGame.computer);
-        })
+        this.game.gameSetUp();
+        this.createBoard(this.game.player);
+        this.createBoard(this.game.computer);
     }
 
-    const createGameEvents = function(game, currentPlayer) {
+    const createGameEvents = function(currentPlayer) {
         const BOARD_LENGTH = 10;
         let container;
         const box = [];
@@ -54,26 +39,26 @@ export default function Interface() {
             box[i].classList.add('board-box');
             
             if (!currentPlayer.isComputer) {
-                this.updateBoard(game, box, currentPlayer.gameboard, i);
+                this.updateBoard(box, currentPlayer.gameboard, i);
             }
             
             box[i].addEventListener('click', () => {
-                if (currentPlayer.isTurn || game.winner != null) {
+                if (currentPlayer.isTurn || this.game.winner != null) {
                     return
                 }
                 const x = Math.floor(i / 10);
                 const y = i % 10;
                 currentPlayer.opponent.attack(x, y);
-                this.updateBoard(game, box, currentPlayer.gameboard, i);
+                this.updateBoard(box, currentPlayer.gameboard, i);
                 box[i].classList.add('no-hover');
                 if (currentPlayer.isComputer) {
                     const playerBox = Array.from(document.querySelector('.board.human').children);
                     const computerAttack = currentPlayer.randomAttack();
-                    this.updateBoard(game, playerBox, currentPlayer.opponent.gameboard, computerAttack[0] * 10 + computerAttack[1]);
+                    this.updateBoard(playerBox, currentPlayer.opponent.gameboard, computerAttack[0] * 10 + computerAttack[1]);
                 }
-                if (game.isGameOver()) {
+                if (this.game.isGameOver()) {
                     const gameOver = document.querySelector('.game-over');
-                    if (game.winner === game.player) {
+                    if (this.game.winner === this.game.player) {
                         gameOver.textContent = `Left board wins! Press "New Game" to play again!`;
                     } else {
                         gameOver.textContent = `Right board wins! Press "New Game" to play again!`;
@@ -85,7 +70,7 @@ export default function Interface() {
         }
     }
 
-    const createBoard = function(game, currentPlayer) {
+    const createBoard = function(currentPlayer) {
         const BOARD_LENGTH = 10;
         let container;
         const box = [];
@@ -109,16 +94,16 @@ export default function Interface() {
                     if (currentPlayer.gameboard.placeShip(Ship(currentPlayer.shipLen[0]), shipDir, x, y)) {
                         for (let j = 0; j < currentPlayer.shipLen[0]; j++) {
                             if (shipDir === 'horz') {
-                                this.updateBoard(game, box, currentPlayer.gameboard, i+j);
+                                this.updateBoard(box, currentPlayer.gameboard, i+j);
                             } else {
-                                this.updateBoard(game, box, currentPlayer.gameboard, i + (10 * j));
+                                this.updateBoard(box, currentPlayer.gameboard, i + (10 * j));
                             }
                         }
                         currentPlayer.shipLen.shift();
                     }
                     if (currentPlayer.shipLen.length === 0) {
-                        this.createGameEvents(game, currentPlayer);
-                        this.createGameEvents(game, currentPlayer.opponent);
+                        this.createGameEvents(currentPlayer);
+                        this.createGameEvents(currentPlayer.opponent);
 
                     }
                 }
@@ -129,19 +114,19 @@ export default function Interface() {
 
     
 
-    const updateBoard = function(game, box, gameboard, i) {
+    const updateBoard = function(box, gameboard, i) {
         const x = Math.floor(i / 10);
         const y = i % 10;
         if (typeof gameboard.board[x][y] === 'object') {
-            box[i].textContent = 'S';
+            box[i].style.backgroundColor = 'black';
         }
         else if (gameboard.board[x][y] === 'miss') {
-            box[i].textContent = 'M';
+            box[i].style.backgroundColor = 'gray';
         }
         else if (gameboard.board[x][y] === 'hit') {
-            box[i].textContent = 'H';
+            box[i].style.backgroundColor = 'red';
         }
     }
 
-    return {  createBoard, interfaceSetUp, updateBoard, createGameEvents }
+    return {  game, createBoard, interfaceSetUp, updateBoard, createGameEvents }
 }

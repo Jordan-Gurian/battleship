@@ -17,6 +17,8 @@ export default function Game() {
         this.player.setOpponent(this.computer);
         this.player.isTurn = true;
         this.computer.isTurn = false;
+        this.winner = null;
+        this.setComputerShips(this.computer);
     }
 
     const setComputerShips = function(currentPlayer) {
