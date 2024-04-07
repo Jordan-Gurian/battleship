@@ -2,7 +2,7 @@ import "./style.css";
 import "normalize.css";
 import Game from './Game';
 import Interface from './Interface';
-import events from './events'
+import newGame from './newGame'
 
 
 // const myGame = Game();
@@ -11,7 +11,7 @@ import events from './events'
 
 const myGame = Game();
 const myUI = Interface(myGame);
-events(myUI);
+newGame(myUI);
 
 myUI.interfaceSetUp();
 // myUI.createBoard(true);
